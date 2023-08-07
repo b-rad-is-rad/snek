@@ -14,8 +14,9 @@ export class Apple implements Observer {
   // TODO : Can't spawn in snake body
   // TODO BUG: apple can spawn 1 square outside canvas edge
   private move(): void {
-    this.x = Math.round((Math.random() * this.canvasWidth) / this.size) * this.size;
-    this.y = Math.round((Math.random() * this.canvasHeight) / this.size) * this.size;
+    this.x = Math.round((Math.random() * (this.canvasWidth - this.size)) / this.size) * this.size;
+    this.y = Math.round((Math.random() * (this.canvasHeight - this.size)) / this.size) * this.size;
+    console.log(`{x: ${this.x}, y: ${this.y}}`);
   }
 
   public onNotify(snake: Snake, event: Event): void {

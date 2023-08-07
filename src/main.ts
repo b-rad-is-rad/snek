@@ -19,11 +19,11 @@ const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
 // Functions
 function randomX(): number {
-  return Math.round((Math.random() * CANVAS_WIDTH) / SNEK_SIZE) * SNEK_SIZE;
+  return Math.round((Math.random() * (CANVAS_WIDTH - SNEK_SIZE)) / SNEK_SIZE) * SNEK_SIZE;
 }
 
 function randomY(): number {
-  return Math.round((Math.random() * CANVAS_HEIGHT) / SNEK_SIZE) * SNEK_SIZE;
+  return Math.round((Math.random() * (CANVAS_HEIGHT - SNEK_SIZE)) / SNEK_SIZE) * SNEK_SIZE;
 }
 
 function clearCanvas(): void {
