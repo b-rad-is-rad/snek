@@ -74,20 +74,6 @@ export class SnakeBody {
 
     return true;
   }
-  // public delete(indexToDelete: number): boolean {
-    // if (this.length <= 0 || indexToDelete > this.length - 1) return false;
-
-    // let currentNode: SnakeBodyPositionNode = this.head!;
-
-    // for (let i = 0; i < indexToDelete; i++) {
-        // currentNode = currentNode.next!;
-    // }
-
-
-
-  // }
-
-  // public reverse() {}
 
   constructor(headX: number, headY: number) {
     this.push(headX,headY);

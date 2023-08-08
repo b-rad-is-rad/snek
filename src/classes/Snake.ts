@@ -3,23 +3,21 @@ import { Event } from "../types/Event";
 import { Observer } from "../types/Observer";
 import { Subject } from "../types/Subject";
 import { SnakeBody } from "./SnakeBody";
-import { SnakeBodyPositionNode } from "./SnakeBodyPositionNode";
 
 // TODO cut off body when collide with self
 
 export class Snake implements Subject {
-  private size: number = 0;
-  private snakeHeadColor: string = "black";
-  private snakeColor: string = "#53b3cb";
-  private movementVector: { x: 0 | 1 | -1; y: 0 | 1 | -1 } = { x: 0, y: 0 };
-  private canvasWidth: number = 0;
-  private canvasHeight: number = 0;
-  private appleEaten: boolean = false;
-  private observers: Observer[] = [];
-  public ctx: CanvasRenderingContext2D;
+  public size: number = 0;
+  public snakeHeadColor: string = "black";
+  public snakeColor: string = "#53b3cb";
+  public movementVector: { x: 0 | 1 | -1; y: 0 | 1 | -1 } = { x: 0, y: 0 };
+  public canvasWidth: number = 0;
+  public canvasHeight: number = 0;
+  public appleEaten: boolean = false;
+  public observers: Observer[] = [];
   public body: SnakeBody;
 
-  private notifyObservers(event: Event): void {
+  public async notifyObservers(event: Event): Promise<void> {
     for (const obs of this.observers) {
       obs.onNotify(this, event);
     }
@@ -74,12 +72,14 @@ export class Snake implements Subject {
 
     this.wrapMoveAroundCanvas();
 
-    if (!this.appleEaten) {
+    if (this.appleEaten) {
+      this.notifyObservers(Event.AteApple);
+    } else {
       this.body.pop();
     }
   }
 
-  private wrapMoveAroundCanvas(): void {
+  public wrapMoveAroundCanvas(): void {
     if (this.body.head!.pos.x < 0 || this.body.head!.pos.x > this.canvasWidth - this.size) {
       if (this.movementVector.x === 1) {
         this.body.head!.pos.x = 0;
@@ -97,47 +97,18 @@ export class Snake implements Subject {
     }
   }
 
-  public checkEatApple(appleX: number, appleY: number): void {
+  public checkAppleEaten(appleX: number, appleY: number): void {
     if (this.body.head!.pos.x === appleX && this.body.head!.pos.y === appleY) {
-      this.eatApple();
+      this.appleEaten = true;
     } else {
       this.appleEaten = false;
     }
   }
 
-  private eatApple(): void {
-    this.appleEaten = true;
-    this.notifyObservers(Event.AteApple);
-  }
-
-  public draw(): void {
-    this.ctx.fillStyle = this.snakeHeadColor;
-
-    let currentNode: SnakeBodyPositionNode = this.body.head!;
-
-    for (let i = 0; i < this.body.length; i++) {
-      if (i === 1) {
-        this.ctx.fillStyle = this.snakeColor;
-      }
-      this.ctx.fillRect(currentNode.pos.x, currentNode.pos.y, this.size, this.size);
-      currentNode = currentNode.next!;
-    }
-  }
-
-  constructor(
-    startX: number,
-    startY: number,
-    size: number,
-    canvasWidth: number,
-    canvasHeight: number,
-    ctx: CanvasRenderingContext2D
-  ) {
+  constructor(startX: number, startY: number, size: number, canvasWidth: number, canvasHeight: number) {
     this.size = size;
-
     this.body = new SnakeBody(startX, startY);
-
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
-    this.ctx = ctx;
   }
 }
