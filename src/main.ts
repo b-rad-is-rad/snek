@@ -9,11 +9,11 @@ import { SnakeBodyPositionNode } from "./classes/SnakeBodyPositionNode";
 // TODO
 
 // Constants
-const SNEK_SIZE = 20;
+const SNEK_SIZE = 10;
 const CANVAS_WIDTH = 400 + SNEK_SIZE;
 const CANVAS_HEIGHT = 500 + SNEK_SIZE;
 const BACKGROUND_COLOR = "#FE00EA";
-const FPS = 1000 / 7;
+const FPS = 1000 / 20;
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
